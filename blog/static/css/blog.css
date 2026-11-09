@@ -69,3 +69,75 @@ h4 {
     color: #FFFFFF;
     background-color: #C25100;
 }
+/* Footer Base Styles */
+.footer {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding: 40px 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-top: 4px solid #ff6600; /* Matching the orange header */
+}
+
+/* Section Layout */
+.footer #contact {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Headings */
+.footer h2 {
+    color: #ff6600; /* Matching the orange header */
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Address & Paragraphs */
+.footer address {
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.footer address p {
+    margin: 0;
+    font-size: 1rem;
+    color: #cccccc;
+}
+
+/* Links */
+.footer address a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+}
+
+.footer address a:hover {
+    color: #ff8533; /* Slightly lighter orange accent on hover */
+    border-bottom: 1px solid #ff8533;
+}
+
+/* Copyright Row */
+.footer #contact > p {
+    font-size: 0.85rem;
+    color: #777777;
+    margin-top: 20px;
+    border-top: 1px solid #333333;
+    padding-top: 20px;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    .footer address {
+        flex-direction: row;
+        justify-content: center;
+        gap: 40px;
+    }
+}
