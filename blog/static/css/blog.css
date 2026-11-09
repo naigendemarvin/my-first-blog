@@ -138,6 +138,6 @@ h4 {
     .footer address {
         flex-direction: row;
         justify-content: center;
-        gap: 40px;
+        gap: 45px;
     }
 }
