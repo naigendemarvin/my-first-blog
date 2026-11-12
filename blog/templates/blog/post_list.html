@@ -1,13 +1,50 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+  <div class="posts-feed">
     {% for post in posts %}
-        <article class="post">
-            <time>published: {{ post.published_date }}</time>
-            <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
-            <p>{{ post.text|linebreaksbr }}</p>
-        </article>
-    {% endfor %}
-{% endblock %}
-   
+      <article class="post">
+        <div class="post-header">
+          <div class="post-meta">
+            {% if post.published_date %}
+              <time class="date">
+                Published: {{ post.published_date|date:"M d, Y · g:i a" }}
+              </time>
+            {% else %}
+              <span class="date draft-badge">Draft</span>
+            {% endif %}
+          </div>
 
+          {% if user.is_staff %}
+            <div class="actions">
+              <a class="btn-secondary" href="{% url 'post_edit' pk=post.pk %}" title="Edit post">
+                Edit
+              </a>
+            </div>
+          {% endif %}
+        </div>
+
+        <h2 class="post-title">
+          <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
+        </h2>
+
+        
+
+        <div class="post-content">
+          <p>{{ post.text|linebreaksbr|truncatewords:65 }}</p>
+        </div>
+
+        <div class="post-footer">
+          <a class="read-more-link" href="{% url 'post_detail' pk=post.pk %}">
+            Read full article &rarr;
+          </a>
+        </div>
+      </article>
+    {% empty %}
+      <article class="post empty-state">
+        <h2>No posts published yet</h2>
+        <p>Engineering notes, network architecture breakdowns, and Python automation tutorials will appear here soon.</p>
+      </article>
+    {% endfor %}
+  </div>
+{% endblock %}

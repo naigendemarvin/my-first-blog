@@ -1,51 +1,128 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Naigende Marvin Andrew | IT Career Blog</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext">
+    <meta name="description" content="Naigende Marvin Andrew — IT Career Blog bridging infrastructure engineering, network security, and Python/Django software automation.">
+    <meta name="author" content="Naigende Marvin Andrew">
+    <meta property="og:title" content="Naigende Marvin Andrew | IT Career Blog">
+    <meta property="og:description" content="Bridging Infrastructure Engineering and Software Automation — insights on Python, Django, Active Directory, and Cloud Deployment.">
+    <meta property="og:type" content="website">
+    <title>{% block title %}Naigende Marvin Andrew | IT Career Blog{% endblock %}</title>
+    <!-- Static path for Django server -->
     <link rel="stylesheet" href="{% static 'css/blog.css' %}">
-    
+    <!-- Direct relative fallback so opening base.html straight in Chrome loads blog.css -->
+    <link rel="stylesheet" href="blog.css">
+    <link rel="stylesheet" href="../static/css/blog.css">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('blog-theme');
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
 </head>
 <body>
+    <nav class="navbar top-nav" aria-label="Primary Navigation">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">
+                <span class="brand-dot"></span>
+                <span>Naigende Marvin Andrew</span>
+            </a>
+            <div class="nav-links">
+                <a href="#posts" class="nav-link">Posts</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark and light theme" title="Switch Theme">
+                    <span class="theme-icon" id="theme-icon">🌙</span>
+                    <span class="theme-label" id="theme-label">Dark</span>
+                </button>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'post_new' %}" class="top-menu" title="New Post" aria-label="Create new post">
+                        {% include './icons/file-earmark-plus.svg' %}
+                        <span class="new-post-text">New Post</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
     <header class="page-header">
-        <div class="container"></div>
-            {% if user.is_authenticated %}
-                <a href="{% url 'post_new' %}" class="top-menu">
-                    {% include './icons/file-earmark-plus.svg' %}
-                </a>
-            {% endif %}
-            <h1><a href= "/">My IT Career Journey</a></h1>
-            <p class="blog-subtitle">Bridging Infrastructure Engineering and Software Automation</p>
+        <div class="header-container">
+            <div class="hero-profile">
+                <div class="avatar-ring">
+                    <img src="{% static 'images/profile.png' %}" onerror="this.onerror=null; this.src='profile.png';" alt="Naigende Marvin Andrew portrait" class="profile-avatar">
+                </div>
+                <div class="hero-text">
+                    <span class="hero-badge">Networks | Systems | Data &amp; Automation</span>
+                    <h1><a href="/">Information Technology Career Blog</a></h1>
+                    <p class="subtitle">Bridging Infrastructure Engineering and Software Automation</p>
+                </div>
+            </div>
         </div>
     </header>
 
-    
-    <main class="content container">
-        <div class="row">
-            <div class="col">
-            {% block content %}
-            {% endblock %}
-            </div>
-        </div>
+    <main id="posts" class="content-container">
+        {% block content %}
+        
+        {% endblock %}
     </main>
 
     <footer class="footer">
-        <section id="contact">
-        <h2>Contact</h2>
-        <address>
-          <p>Phone: <a href="tel:+256757473532">+256-757-473-532</a></p>
-          <p>Email: <a href="mailto:naigendemarvin@gmail.com">naigendemarvin@gmail.com</a></p>
-          <p>Linkedin: <a href="https://www.linkedin.com/in/naigende-marvin-andrew-133563383" target="_blank">linkedin.com/in/naigendemarvin</a></p>
-        </address>
-        <p>&copy; 2026 Naigende Marvin Andrew.</p>
-      </section>
+        <section id="contact" class="footer-container">
+            <h2>Contact</h2>
+            <address class="contact-links">
+                <p>
+                    <a href="tel:+256757473532" aria-label="Call Naigende Marvin Andrew">
+                        <span class="contact-label">Phone:</span> +256-757-473-532
+                    </a>
+                </p>
+                <p>
+                    <a href="mailto:naigendemarvin@gmail.com" aria-label="Email Naigende Marvin Andrew">
+                        <span class="contact-label">Email:</span> naigendemarvin@gmail.com
+                    </a>
+                </p>
+                <p>
+                    <a href="https://www.linkedin.com/in/naigende-marvin-andrew-133563383" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
+                        <span class="contact-label">LinkedIn:</span> linkedin.com/in/naigendemarvin
+                    </a>
+                </p>
+            </address>
+            <p class="copyright">&copy; 2026 Naigende Marvin Andrew.</p>
+        </section>
     </footer>
 
+    <script>
+        (function() {
+            const toggleBtn = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const themeLabel = document.getElementById('theme-label');
+
+            function updateButtonUI(theme) {
+                if (!themeIcon || !themeLabel) return;
+                if (theme === 'dark') {
+                    themeIcon.textContent = '☀️';
+                    themeLabel.textContent = 'Light';
+                } else {
+                    themeIcon.textContent = '🌙';
+                    themeLabel.textContent = 'Dark';
+                }
+            }
+
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            updateButtonUI(currentTheme);
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function() {
+                    const active = document.documentElement.getAttribute('data-theme');
+                    const next = active === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', next);
+                    localStorage.setItem('blog-theme', next);
+                    updateButtonUI(next);
+                });
+            }
+        })();
+    </script>
 </body>
 </html>
-
-
