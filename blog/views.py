@@ -4,10 +4,26 @@ from django.utils import timezone
 from .models import Post
 from django.shortcuts import render, get_object_or_404
 from .forms import PostForm
+from django.core.paginator import Paginator
+from django.db.models import Q
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    return render(request, 'blog/post_list.html', {'posts': posts})
+    query = request.GET.get('q', '').strip()
+    posts = Post.objects.filter(published_date__lte=timezone.now())
+    if query:
+        posts = posts.filter(
+            Q(title__icontains=query) | Q(text__icontains=query)
+        )
+
+    # Show 5 posts per page
+    paginator = Paginator(posts, 5)
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
+
+    return render(request, 'blog/post_list.html', {
+        'posts': posts, 
+        'query': query,
+    })
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog/post_detail.html', {'post': post})

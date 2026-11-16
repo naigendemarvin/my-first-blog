@@ -1,4 +1,6 @@
 {% extends 'blog/base.html' %}
+{% block title %}{{ post.title }} | Naigende Marvin Andrew{% endblock %}
+{% block meta_description %}{{ post.text|striptags|truncatewords:25 }}{% endblock %}
 
 {% block content %}
     <article class="post">
